@@ -1,6 +1,7 @@
 #TODO: I Hate TODO, but, I will keep this format and work on filenavigation.py and finish this script by having guitest.py as a reference
 import tkinter as tk
-from tkinter import ttk, Menu, messagebox
+from tkinter import ttk#,Scrollbar ,Text , Menu, messagebox
+from tkinter import *
 
 class Culture:
 
@@ -9,26 +10,28 @@ class Culture:
 		print('hai')
 		self.win = tk.Tk()
 
-		
+
 		#Will config the win
 		self.win.title('List Saver')
 		self.win.iconbitmap('icon.ico')
 		self.win.minsize(260,110)
+		self.win.maxsize(261,111)
 
 		#Initializing body vars
+		#to know: lambda will make buttonclicked accept parameters in command
 		self.name = tk.StringVar()
 		self.nameEntered = ttk.Entry(self.win, width = 42,textvariable=self.name)
-		self.action = ttk.Button(self.win, text='Movies', command = self.buttonClicked)
-		self.action2 = ttk.Button(self.win, text='Books', command = self.buttonClicked)
+		self.action = ttk.Button(self.win, text='Movies', command = lambda: self.buttonClicked(8))
+		self.action2 = ttk.Button(self.win, text='Books', command = lambda: self.buttonClicked(8))
 		self.action3 = ttk.Button(self.win, text='Graphic Novels', command = self.newWindow)
-		self.action4 = ttk.Button(self.win, text='Read Mvs', command = self.buttonClicked)
-		self.action5 = ttk.Button(self.win, text='Read Bks', command = self.buttonClicked)
-		self.action6 = ttk.Button(self.win, text='Read HQ', command = self.buttonClicked)
+		self.action4 = ttk.Button(self.win, text='Read Mvs', command = lambda: self.buttonClicked(8))
+		self.action5 = ttk.Button(self.win, text='Read Bks', command = lambda: self.buttonClicked(8))
+		self.action6 = ttk.Button(self.win, text='Read HQ', command = lambda: self.buttonClicked(8))
 
-		
+
 		#will call the methods that does everything
 		self.createMenu()
-	
+
 	def createMenu(self):
 		menuBar= Menu(self.win)
 		self.win.config(menu=menuBar)
@@ -67,11 +70,20 @@ class Culture:
 		self.win.destroy()
 		exit()
 
-	def newWindow(self):
+	def newWindow(self, text = 'beep boop'):
+		#make it a list? how will it display? will i really use this method?
 		window = tk.Tk()
+		window.iconbitmap('icon.ico')
 		window.title('new Window')
-		label = ttk.Label(window, text="This is the new window")
-		label.pack()
+		scroll = Scrollbar(window)
+		textB = Text(window, height=4, width=50)
+		scroll.pack(side=RIGHT, fill=Y)
+		textB.pack(side=LEFT, fill=Y)
+		scroll.config(command=textB.yview)
+		textB.config(yscrollcommand=scroll.set)
+		textB.insert(END, text)
+		#label = ttk.Label(window, text= text)
+		#label.pack()
 		window.mainloop()
 
 	def _aboutBox(self):
@@ -79,7 +91,7 @@ class Culture:
 
 	def _errorBox(self, type=0):
 		if(type==0):
-			messagebox.showerror('Error','Dev Error')
+			messagebox.showerror('Error','Dev Error/Dev work in progress')
 		elif(type==1):
 			messagebox.showwarning('Error','This already exists!')
 		else:
@@ -87,12 +99,30 @@ class Culture:
 
 	#----Handler
 	def buttonClicked(self, action=0):
+		tempText = self.name.get().lower() #lower to check if it already exists, but saves normally
 		if(action == 0):
+			#salvar info de movies
 			self.action.configure(text= "Done!" + self.name.get())
 			self.nameEntered.delete(0,'end')
 			self.nameEntered.focus()
+		elif(action == 1):
+			#salvar info de books
+			print('bahia')
+		elif(action == 2):
+			#salvar info de graphic novels
+			print('bahia')
+		elif(action == 3):
+			#ler movies
+			print('bahia')
+		elif(action == 4):
+			#ler Books
+			print('bahia')
+		elif(action == 5):
+			#ler graphic novels
+			print('bahia')
 		else:
-			self.action.configure(text='WIP')
+			#nunca deve acontecer
+			self._errorBox(0)
 
 
 
